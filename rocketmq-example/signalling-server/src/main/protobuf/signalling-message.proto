@@ -1,0 +1,66 @@
+package com.netty.example.server.proto;
+import "google/protobuf/any.proto";
+
+//消息类型
+enum MessageType {
+
+    //数据
+    DATA = 1;
+
+    //信令
+    SIGNALLING = 2;
+}
+
+//消息
+message WrapperMessage {
+
+    //消息id
+    required int64 id = 1;
+
+    //过期时间，-1表示不过期
+    required int64 expireTimes = 2;
+
+    //优先级
+    required int32 priority = 3;
+
+    //消息类型
+    required MessageType type = 4;
+
+    //是否加密
+    required bool isEncryption = 5;
+
+    //是否需要ack
+    required bool needAck = 6;
+
+    //消息的数据类型
+    required string payloadType = 7;
+
+    //消息内容
+    required bytes payload = 8;
+
+    //消息来源
+    required string referer = 9;
+
+}
+
+//连接消息
+message ConnectionMessage {
+
+    //会话标识
+    required string sessionIdentifier = 1;
+
+}
+
+//ping 消息
+message PingMessage {
+
+    required bytes ping = 1;
+}
+
+//pong 消息
+message PongMessage {
+
+    required bytes pong = 1;
+}
+
+

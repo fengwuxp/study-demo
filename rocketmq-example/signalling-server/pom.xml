@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>rocketmq-example</artifactId>
+        <groupId>com.rocketmq.example</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>example-netty-signalling</artifactId>
+
+    <properties>
+        <protobuf.version>3.5.1</protobuf.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java-util -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java-util</artifactId>
+            <version>${protobuf.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.googlecode.protobuf-java-format/protobuf-java-format -->
+        <dependency>
+            <groupId>com.googlecode.protobuf-java-format</groupId>
+            <artifactId>protobuf-java-format</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--使用插件生成java 代码-->
+            <!--http://blog.csdn.net/qq_27273089/article/details/70230897-->
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.1</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!--执行的命令-->
+                    <!--<protocExecutable>protoc</protocExecutable>-->
+                    <!--proto文件目录-->
+                    <protoSourceRoot>${project.basedir}/src/main/protobuf/</protoSourceRoot>
+
+                    <!--输出目录-->
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <!--<outputDirectory>${project.build.sourceDirectory}</outputDirectory>-->
+                    <!--设置是否在生成java文件之前清空outputDirectory的文件，默认值为true，设置为false时也会覆盖同名文件-->
+                    <clearOutputDirectory>false</clearOutputDirectory>
+                    <!--默认值-->
+                    <temporaryProtoFileDirectory>${project.build.directory}/protoc-dependencies
+                    </temporaryProtoFileDirectory>
+                    <!--更多配置信息可以查看https://www.xolstice.org/protobuf-maven-plugin/compile-mojo.html-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <!--也可以设置成局部变量，执行compile或test-compile时才执行-->
+                        <!--<configuration>-->
+                        <!--<protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>-->
+                        <!--<outputDirectory>${project.build.directory}/generated-sources/protobuf/java</outputDirectory>-->
+                        <!--<temporaryProtoFileDirectory>${project.build.directory}/protoc-dependencies</temporaryProtoFileDirectory>-->
+                        <!--</configuration>-->
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

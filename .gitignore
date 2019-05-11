@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+*.idea
+target
+node_modules
+*.iml
+*/mvnw
+*/mvnw.cmd
+*.mvn
+gradle
+gradlew
+gradlew.bat
+*-lock.json

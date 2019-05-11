@@ -1,0 +1,32 @@
+package com.netty.example.server.proto;
+
+enum ActionType {
+
+    //新任务
+    NEW = 1;
+
+    //启动任务
+    START = 2;
+
+    //停止任务
+    STOP = 3;
+
+    //取消任务
+    //    CANCEL = 5;
+
+    //移除任务
+    REMOVE = 6;
+
+    //更新任务
+    UPDATE = 7;
+}
+
+//任务消息
+message TaskMessage {
+
+    //动作类型
+    required ActionType actionType = 1;
+
+    //任务id 列表
+    repeated int64 taskIds = 2;
+}

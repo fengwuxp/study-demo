@@ -1,0 +1,7 @@
+{
+  "presets": ["es2015","stage-0"] ,
+  "plugins": [
+    //对于ES7async的支持
+    "transform-runtime"
+  ]
+}
