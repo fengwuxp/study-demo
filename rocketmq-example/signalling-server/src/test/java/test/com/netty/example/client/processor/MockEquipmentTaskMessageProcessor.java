@@ -19,7 +19,7 @@ public class MockEquipmentTaskMessageProcessor implements MessageProcessor {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("接受到服务端的任务消息，任务目标{}，任务内容：{}", taskMessage.getTarget(), taskMessage.getTaskIdsList());
+            log.debug("接收到服务端的任务消息，任务目标{}，任务内容：{}", taskMessage.getTarget(), taskMessage.getTaskIdsList());
         }
     }
 

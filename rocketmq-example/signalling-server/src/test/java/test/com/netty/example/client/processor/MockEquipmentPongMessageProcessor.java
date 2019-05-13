@@ -15,7 +15,7 @@ public class MockEquipmentPongMessageProcessor implements MessageProcessor {
         SignallingMessage.PongMessage pongMessage = this.parseMessage(wrapperMessage);
 
         if (log.isDebugEnabled()) {
-            log.debug("接受到服务端的pong消息，{}", pongMessage.getPong());
+            log.debug("接收到服务端的pong消息，{}", pongMessage.getPong());
         }
     }
 }
