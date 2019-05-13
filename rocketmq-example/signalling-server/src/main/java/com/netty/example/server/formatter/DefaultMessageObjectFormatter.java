@@ -3,6 +3,7 @@ package com.netty.example.server.formatter;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import com.netty.example.server.proto.SignallingMessage;
+import com.netty.example.server.proto.TaskMessageOuterClass;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -26,15 +27,23 @@ public class DefaultMessageObjectFormatter implements MessageObjectFormatter {
             case CONNECTION_REQUEST:
                 builder = SignallingMessage.ConnectionRequestMessage.newBuilder();
                 break;
+
             case CONNECTION_RESPONSE:
                 builder = SignallingMessage.ConnectionResponseMessage.newBuilder();
                 break;
+
             case PING:
                 builder = SignallingMessage.PingMessage.newBuilder();
                 break;
+
             case PONG:
                 builder = SignallingMessage.PongMessage.newBuilder();
                 break;
+
+            case TASK:
+                builder = TaskMessageOuterClass.TaskMessage.newBuilder();
+                break;
+
             default:
                 if (log.isDebugEnabled()) {
                     log.debug("为处理的消息类型{}", payloadType);

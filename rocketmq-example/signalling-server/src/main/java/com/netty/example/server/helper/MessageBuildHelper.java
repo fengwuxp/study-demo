@@ -30,7 +30,7 @@ public final class MessageBuildHelper {
         return getDataWrapperMessage(connectionRequestMessage, SignallingMessage.PayloadType.CONNECTION_REQUEST);
     }
 
-    public static SignallingMessage.WrapperMessage getConnectionResponseMessage(SignallingMessage.ConnectionResponseMessage  connectionResponseMessage) {
+    public static SignallingMessage.WrapperMessage getConnectionResponseMessage(SignallingMessage.ConnectionResponseMessage connectionResponseMessage) {
         return getDataWrapperMessage(connectionResponseMessage, SignallingMessage.PayloadType.CONNECTION_RESPONSE);
     }
 
@@ -45,9 +45,8 @@ public final class MessageBuildHelper {
 
 
     public static SignallingMessage.WrapperMessage getPushTaskMessage(TaskMessageOuterClass.TaskMessage taskMessage) {
-        return getSignallingWrapperMessage(taskMessage, SignallingMessage.PayloadType.PONG);
+        return getSignallingWrapperMessage(taskMessage, SignallingMessage.PayloadType.TASK);
     }
-
 
 
     public static SignallingMessage.WrapperMessage getDataWrapperMessage(MessageOrBuilder messageOrBuilder, SignallingMessage.PayloadType payloadType) {
