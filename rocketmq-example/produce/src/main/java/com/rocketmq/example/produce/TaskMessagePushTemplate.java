@@ -70,7 +70,7 @@ public class TaskMessagePushTemplate {
 
     @Data
     @Builder
-    class TaskMessage {
+    static class TaskMessage {
 
         private String target;
 

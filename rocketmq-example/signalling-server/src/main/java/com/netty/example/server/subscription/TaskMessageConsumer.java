@@ -19,6 +19,8 @@ public class TaskMessageConsumer implements RocketMQListener<String> {
 
     private MessagePusher<String> taskMessagePusher = new ExampleTaskMessagePusher();
 
+    private int successTotal = 0;
+
     @Override
     public void onMessage(String message) {
 
@@ -31,6 +33,12 @@ public class TaskMessageConsumer implements RocketMQListener<String> {
         if (!b) {
 
             throw new RuntimeException("任务消息推送失败");
+        }
+
+        this.successTotal++;
+
+        if (log.isDebugEnabled()) {
+            log.debug("推送消息成功，已推送成功的任务数：{}", this.successTotal);
         }
 
     }

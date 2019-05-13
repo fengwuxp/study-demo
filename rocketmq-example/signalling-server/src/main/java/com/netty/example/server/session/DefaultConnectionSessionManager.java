@@ -70,6 +70,9 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
     @Override
     public ChannelHandlerContext getConnection(String sessionIdentifier) {
         ChannelHandlerContext channelHandlerContext = this.channelHandlerContextMap.get(sessionIdentifier);
+        if (channelHandlerContext == null) {
+            return null;
+        }
         boolean needRemove = channelHandlerContext.isRemoved() && !channelHandlerContext.channel().isActive();
 
         if (needRemove) {

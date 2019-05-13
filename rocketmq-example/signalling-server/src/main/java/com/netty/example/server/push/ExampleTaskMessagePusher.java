@@ -4,6 +4,7 @@ package com.netty.example.server.push;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.util.JsonFormat;
+import com.netty.example.server.helper.MessageBuildHelper;
 import com.netty.example.server.proto.TaskMessageOuterClass;
 import com.netty.example.server.session.DefaultConnectionSessionManager;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,7 +35,7 @@ public class ExampleTaskMessagePusher implements MessagePusher<String> {
 
         String identifier = taskMessage.getTarget();
 
-        if (StringUtils.hasText(identifier)) {
+        if (!StringUtils.hasText(identifier)) {
             if (log.isDebugEnabled()) {
                 log.debug("任务推送目标未设置");
             }
@@ -53,7 +54,7 @@ public class ExampleTaskMessagePusher implements MessagePusher<String> {
         //TODO 判断连接的有效性
 
         //推送任务消息
-        connection.write(taskMessage);
+        connection.write(MessageBuildHelper.getPushTaskMessage(taskMessage));
         connection.flush();
 
         return true;
