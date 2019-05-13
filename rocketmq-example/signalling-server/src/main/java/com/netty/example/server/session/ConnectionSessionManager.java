@@ -1,5 +1,6 @@
 package com.netty.example.server.session;
 
+import com.netty.example.server.proto.SignallingMessage;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -14,7 +15,7 @@ public interface ConnectionSessionManager {
      * @param sessionIdentifier
      * @param channelHandlerContext
      */
-    ConnectionStatus join(String sessionIdentifier, ChannelHandlerContext channelHandlerContext);
+    SignallingMessage.ConnectionStatus join(String sessionIdentifier, ChannelHandlerContext channelHandlerContext);
 
 
     void remove(String sessionIdentifier);
@@ -52,11 +53,13 @@ public interface ConnectionSessionManager {
     boolean existConnection(String sessionIdentifier);
 
 
-    public enum ConnectionStatus {
+    /**
+     * 获取会话标识
+     *
+     * @param channelHandlerContext
+     * @return
+     */
+    String getSessionIdentifier(ChannelHandlerContext channelHandlerContext);
 
-        SUCCESS,
 
-        //Repeated
-        REPEATED
-    }
 }

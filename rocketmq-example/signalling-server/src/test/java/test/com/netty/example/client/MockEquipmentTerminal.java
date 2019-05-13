@@ -71,7 +71,7 @@ public class MockEquipmentTerminal implements Runnable {
                         channel.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
 
                         //设置编解码
-                        channel.pipeline().addLast(new ProtobufDecoder(SignallingMessage.CommonMessage.getDefaultInstance()));
+                        channel.pipeline().addLast(new ProtobufDecoder(SignallingMessage.WrapperMessage.getDefaultInstance()));
                         channel.pipeline().addLast(new ProtobufEncoder());
 
                         channel.pipeline().addLast(mockTerminalHandler);

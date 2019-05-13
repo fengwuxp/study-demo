@@ -2,7 +2,9 @@ package test.com.netty.example.client;
 
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.compiler.PluginProtos;
 import com.google.protobuf.util.JsonFormat;
+import com.netty.example.server.helper.MessageBuildHelper;
 import com.netty.example.server.proto.SignallingMessage;
 import com.netty.example.server.proto.TaskMessageOuterClass;
 import org.junit.Test;
@@ -37,25 +39,15 @@ public class MockEquipmentTerminalTest {
     }
 
     @Test
-    public void testFo() throws Exception {
-        SignallingMessage.WrapperMessage commonMessage = SignallingMessage.WrapperMessage
+    public void testFormatter() throws Exception {
+
+
+        SignallingMessage.ConnectionRequestMessage requestMessage = SignallingMessage.ConnectionRequestMessage
                 .newBuilder()
-                .setId(1)
-                .setNeedAck(false)
-                .setExpireTimes(System.currentTimeMillis())
-                .setPayload(ByteString.copyFrom("123".getBytes("UTf-8")))
-                .setIsEncryption(false)
-                .setPriority(1)
-                .setType(SignallingMessage.MessageType.SIGNALLING)
+                .setSessionIdentifier("123")
                 .build();
 
-        SignallingMessage.WrapperMessage.Builder builder = SignallingMessage.WrapperMessage.newBuilder();
-        JsonFormat.parser().merge(
-                JsonFormat.printer().print(commonMessage),
-                builder);
-        SignallingMessage.WrapperMessage build = builder.build();
-
-        System.out.println(build);
+        SignallingMessage.WrapperMessage message = MessageBuildHelper.getConnectionRequestMessage(requestMessage);
     }
 
 }

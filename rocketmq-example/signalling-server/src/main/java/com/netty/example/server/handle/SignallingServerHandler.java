@@ -2,8 +2,10 @@ package com.netty.example.server.handle;
 
 
 import com.netty.example.server.ClientChannelContextHolder;
-import com.netty.example.server.formatter.MessageObjectFormatter;
-import com.netty.example.server.processor.IdleStateEventProcessor;
+import com.netty.example.server.heartbeat.DefaultIdleStateEventProcessor;
+import com.netty.example.server.heartbeat.HeartbeatMessageProcessor;
+import com.netty.example.server.heartbeat.IdleStateEventProcessor;
+import com.netty.example.server.processor.ConnectionMessageProcessor;
 import com.netty.example.server.processor.MessageProcessor;
 import com.netty.example.server.proto.SignallingMessage;
 import com.netty.example.server.session.DefaultConnectionSessionManager;
@@ -15,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -25,9 +26,14 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
     private Map<String, ClientChannelContextHolder> CLIENT_SESSION_MAP = new ConcurrentHashMap<>();
 
 
-    private Map<Integer, MessageProcessor> messageProcessorMap = new HashMap<>();
+    private final static Map<SignallingMessage.PayloadType, MessageProcessor> MESSAGE_PROCESSOR_MAP = new HashMap<>();
 
-    private IdleStateEventProcessor idleStateEventProcessor;
+    private IdleStateEventProcessor idleStateEventProcessor = new DefaultIdleStateEventProcessor();
+
+    static {
+        MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.CONNECTION_REQUEST, new ConnectionMessageProcessor());
+        MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.PONG, new HeartbeatMessageProcessor());
+    }
 
     /**
      * 当通道被激活的时候
@@ -50,9 +56,20 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         SignallingMessage.WrapperMessage requestMessage = (SignallingMessage.WrapperMessage) msg;
-        log.debug("读取消息，{}", msg);
+        if (log.isDebugEnabled()) {
+            log.debug("读取消息，{}", msg);
+        }
 
+        SignallingMessage.PayloadType payloadType = requestMessage.getHeader().getPayloadType();
+        MessageProcessor messageProcessor = MESSAGE_PROCESSOR_MAP.get(payloadType);
+        if (messageProcessor != null) {
+            messageProcessor.process(requestMessage, ctx);
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("未处理的数据类型，{}", payloadType);
+            }
 
+        }
     }
 
     @Override
@@ -74,12 +91,14 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
 
             switch (state) {
                 case READER_IDLE:
+                    this.idleStateEventProcessor.readIdleProcess(ctx);
 
                     break;
                 case WRITER_IDLE:
-
+                    this.idleStateEventProcessor.writeIdleProcess(ctx);
                     break;
                 case ALL_IDLE:
+                    this.idleStateEventProcessor.allIdleProcess(ctx);
                     break;
                 default:
                     break;

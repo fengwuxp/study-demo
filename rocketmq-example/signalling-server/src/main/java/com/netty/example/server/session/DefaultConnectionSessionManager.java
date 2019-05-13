@@ -1,5 +1,6 @@
 package com.netty.example.server.session;
 
+import com.netty.example.server.proto.SignallingMessage;
 import com.sun.org.apache.regexp.internal.RE;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.Attribute;
@@ -29,19 +30,19 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
     protected static final AttributeKey SESSION_IDENTIFIER_KEY = AttributeKey.newInstance(SESSION_IDENTIFIER);
 
     @Override
-    public ConnectionStatus join(String sessionIdentifier, ChannelHandlerContext channelHandlerContext) {
+    public SignallingMessage.ConnectionStatus join(String sessionIdentifier, ChannelHandlerContext channelHandlerContext) {
 
         if (this.existConnection(sessionIdentifier)) {
             //连接已经存在
             log.error("会话标识为{}的连接已经存在", sessionIdentifier);
-            return ConnectionStatus.REPEATED;
+//            return SignallingMessage.ConnectionStatus.REPEATED;
         }
 
         Attribute attribute = channelHandlerContext.channel().attr(SESSION_IDENTIFIER_KEY);
         attribute.set(sessionIdentifier);
         this.channelHandlerContextMap.put(sessionIdentifier, channelHandlerContext);
 
-        return ConnectionStatus.SUCCESS;
+        return SignallingMessage.ConnectionStatus.SUCCESS;
 
     }
 
@@ -52,7 +53,7 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
 
     @Override
     public void remove(ChannelHandlerContext channelHandlerContext) {
-        String key = getSessionId(channelHandlerContext);
+        String key = getSessionIdentifier(channelHandlerContext);
         this.remove(key);
 
     }
@@ -61,7 +62,7 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
     @Override
     public ChannelHandlerContext getConnection(ChannelHandlerContext channelHandlerContext) {
 
-        String key = getSessionId(channelHandlerContext);
+        String key = getSessionIdentifier(channelHandlerContext);
 
         return this.getConnection(key);
     }
@@ -82,7 +83,7 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
 
     @Override
     public boolean existConnection(ChannelHandlerContext channelHandlerContext) {
-        String key = getSessionId(channelHandlerContext);
+        String key = getSessionIdentifier(channelHandlerContext);
 
         return this.existConnection(key);
     }
@@ -92,7 +93,8 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
         return this.channelHandlerContextMap.containsKey(sessionIdentifier);
     }
 
-    private String getSessionId(ChannelHandlerContext channelHandlerContext) {
+    @Override
+    public String getSessionIdentifier(ChannelHandlerContext channelHandlerContext) {
         if (channelHandlerContext.channel().hasAttr(SESSION_IDENTIFIER_KEY)) {
             return null;
         }

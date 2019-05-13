@@ -14,13 +14,14 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * 基于netty的 信令服务器
  */
 @Slf4j
 public class SignallingServer {
-
 
     private int port;
 
@@ -32,14 +33,10 @@ public class SignallingServer {
 
     private ChannelHandler channelHandler;
 
-    /**
-     * @param port
-     */
     public SignallingServer(int port) {
         this.port = port;
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
-
         channelHandler = new ChannelInitializerImpl<SocketChannel>();
     }
 
@@ -92,8 +89,5 @@ public class SignallingServer {
 
     }
 
-    public static void main(String[] args) {
-        new SignallingServer(19999).start();
-    }
 
 }

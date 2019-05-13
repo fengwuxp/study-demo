@@ -11,11 +11,27 @@ enum MessageType {
     SIGNALLING = 2;
 }
 
-//消息
-message WrapperMessage {
+//负载数据类型
+enum PayloadType {
+
+    //连接请求
+    CONNECTION_REQUEST = 1;
+
+    //连接响应
+    CONNECTION_RESPONSE = 2;
+
+    //ping
+    PING = 3;
+
+    //pong
+    PONG = 4;
+}
+
+//消息头
+message MessageHeader {
 
     //消息id
-    required int64 id = 1;
+    required string id = 1;
 
     //过期时间，-1表示不过期
     required int64 expireTimes = 2;
@@ -32,35 +48,67 @@ message WrapperMessage {
     //是否需要ack
     required bool needAck = 6;
 
+    //消息来源
+    required string referer = 8;
+
     //消息的数据类型
-    required string payloadType = 7;
+    required PayloadType payloadType = 9;
+}
+
+//消息
+message WrapperMessage {
+
+    //消息头
+    required MessageHeader header = 1;
 
     //消息内容
-    required bytes payload = 8;
-
-    //消息来源
-    required string referer = 9;
+    required bytes payload = 2;
 
 }
 
 //连接消息
-message ConnectionMessage {
+message ConnectionRequestMessage {
 
     //会话标识
     required string sessionIdentifier = 1;
 
 }
 
+//连接状态
+enum ConnectionStatus {
+
+    //连接成功
+    SUCCESS = 1;
+
+    //连接错误
+    ERROR = 2;
+
+    //重复连接
+    REPEATED = 3;
+}
+
+//连接响应消息
+message ConnectionResponseMessage {
+
+    //连接状态
+    required ConnectionStatus status = 1;
+
+    //错误消息
+    optional string errorMessage = 2;
+}
+
 //ping 消息
 message PingMessage {
 
-    required bytes ping = 1;
+    //ping 1
+    required int32 ping = 1;
 }
 
 //pong 消息
 message PongMessage {
 
-    required bytes pong = 1;
+    //pong 1
+    required int32 pong = 1;
 }
 
 

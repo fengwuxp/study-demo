@@ -27,13 +27,9 @@ public class MockTerminalHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//        try {
-//            SignllingMessage.TaskPushMessage pushMessage = (SignllingMessage.TaskPushMessage) msg;
-//
-//            System.out.println("服务端响应数据-->" + pushMessage.getContent());
-//        } finally {
-//            ReferenceCountUtil.release(msg);
-//        }
+
+
+
     }
 
     @Override

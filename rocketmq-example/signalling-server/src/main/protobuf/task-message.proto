@@ -24,9 +24,12 @@ enum ActionType {
 //任务消息
 message TaskMessage {
 
+    //目标设备
+    required string target = 1;
+
     //动作类型
-    required ActionType actionType = 1;
+    required ActionType actionType = 2;
 
     //任务id 列表
-    repeated int64 taskIds = 2;
+    repeated int64 taskIds = 3;
 }

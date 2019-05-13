@@ -1,4 +1,4 @@
-package com.netty.example.server.processor;
+package com.netty.example.server.heartbeat;
 
 import io.netty.channel.ChannelHandlerContext;
 
