@@ -1,12 +1,8 @@
 package test.com.netty.example.client;
 
 
-import com.google.protobuf.ByteString;
-import com.google.protobuf.compiler.PluginProtos;
-import com.google.protobuf.util.JsonFormat;
 import com.netty.example.server.helper.MessageBuildHelper;
 import com.netty.example.server.proto.SignallingMessage;
-import com.netty.example.server.proto.TaskMessageOuterClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ public class MockEquipmentTerminalTest {
         String host = "127.0.0.1";
         int port = 19999;
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             MockEquipmentTerminal mockEquipmentTerminal = new MockEquipmentTerminal(host, port, i + "");
             list.add(mockEquipmentTerminal);
 

@@ -7,6 +7,7 @@ import com.google.protobuf.MessageOrBuilder;
 import com.google.protobuf.util.JsonFormat;
 import com.netty.example.server.formatter.DefaultMessageObjectFormatter;
 import com.netty.example.server.proto.SignallingMessage;
+import com.netty.example.server.proto.TaskMessageOuterClass;
 import org.springframework.util.AlternativeJdkIdGenerator;
 import org.springframework.util.IdGenerator;
 
@@ -24,23 +25,29 @@ public final class MessageBuildHelper {
     }
 
 
-    public static SignallingMessage.WrapperMessage getConnectionRequestMessage(MessageOrBuilder messageLite) {
+    public static SignallingMessage.WrapperMessage getConnectionRequestMessage(SignallingMessage.ConnectionRequestMessage connectionRequestMessage) {
 
-        return getDataWrapperMessage(messageLite, SignallingMessage.PayloadType.CONNECTION_REQUEST);
+        return getDataWrapperMessage(connectionRequestMessage, SignallingMessage.PayloadType.CONNECTION_REQUEST);
     }
 
-    public static SignallingMessage.WrapperMessage getConnectionResponseMessage(MessageOrBuilder messageLite) {
-        return getDataWrapperMessage(messageLite, SignallingMessage.PayloadType.CONNECTION_RESPONSE);
+    public static SignallingMessage.WrapperMessage getConnectionResponseMessage(SignallingMessage.ConnectionResponseMessage  connectionResponseMessage) {
+        return getDataWrapperMessage(connectionResponseMessage, SignallingMessage.PayloadType.CONNECTION_RESPONSE);
     }
 
 
-    public static SignallingMessage.WrapperMessage getPingMessage(MessageOrBuilder messageLite) {
-        return getSignallingWrapperMessage(messageLite, SignallingMessage.PayloadType.PING);
+    public static SignallingMessage.WrapperMessage getPingMessage(SignallingMessage.PingMessage pingMessage) {
+        return getSignallingWrapperMessage(pingMessage, SignallingMessage.PayloadType.PING);
     }
 
-    public static SignallingMessage.WrapperMessage getPongMessage(MessageOrBuilder messageLite) {
-        return getSignallingWrapperMessage(messageLite, SignallingMessage.PayloadType.PONG);
+    public static SignallingMessage.WrapperMessage getPongMessage(SignallingMessage.PongMessage pongMessage) {
+        return getSignallingWrapperMessage(pongMessage, SignallingMessage.PayloadType.PONG);
     }
+
+
+    public static SignallingMessage.WrapperMessage getPushTaskMessage(TaskMessageOuterClass.TaskMessage taskMessage) {
+        return getSignallingWrapperMessage(taskMessage, SignallingMessage.PayloadType.PONG);
+    }
+
 
 
     public static SignallingMessage.WrapperMessage getDataWrapperMessage(MessageOrBuilder messageOrBuilder, SignallingMessage.PayloadType payloadType) {

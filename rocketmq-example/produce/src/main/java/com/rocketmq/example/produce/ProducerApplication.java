@@ -65,6 +65,9 @@ public class ProducerApplication implements CommandLineRunner {
     @Autowired
     private RocketMQTemplate extRocketMQTemplate;
 
+    @Autowired
+    private TaskMessagePushTemplate taskMessagePushTemplate;
+
     public static void main(String[] args) {
         SpringApplication.run(ProducerApplication.class, args);
     }
@@ -107,6 +110,8 @@ public class ProducerApplication implements CommandLineRunner {
 
         // Send transactional messages
         testTransaction();
+
+        taskMessagePushTemplate.batchPush();
     }
 
     private void testBatchMessages() {

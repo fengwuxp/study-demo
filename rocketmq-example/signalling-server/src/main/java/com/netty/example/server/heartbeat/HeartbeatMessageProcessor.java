@@ -14,23 +14,21 @@ import lombok.extern.slf4j.Slf4j;
 public class HeartbeatMessageProcessor implements MessageProcessor {
 
 
-    private static final Byte PINT = 1;
+    private static final Integer PINT = 1;
 
-    private static final Byte PONG = 1;
+    private static final Integer PONG = 1;
 
     @Override
     public void process(SignallingMessage.WrapperMessage wrapperMessage, ChannelHandlerContext channelHandlerContext) {
         SignallingMessage.PingMessage pingMessage = this.parseMessage(wrapperMessage);
 
+        log.debug("收到ping消息，{}", pingMessage.getPing());
         if (PINT.equals(pingMessage.getPing())) {
-            ;
-            SignallingMessage.WrapperMessage message = MessageBuildHelper.getPongMessage(
-                    SignallingMessage.PongMessage
-                            .newBuilder()
-                            .setPong(PONG)
-                            .build());
-//            channelHandlerContext.write(MessageBuildHelper.getDefaultSignallingWrapperMessage(message));
-
+            channelHandlerContext.write(MessageBuildHelper.getPongMessage(SignallingMessage.PongMessage
+                    .newBuilder()
+                    .setPong(PONG)
+                    .build()));
+            channelHandlerContext.flush();
         } else {
             log.error("ping message error，receive message = {}", pingMessage.getPing());
             //TODO

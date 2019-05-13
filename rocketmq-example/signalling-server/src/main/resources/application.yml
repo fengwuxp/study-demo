@@ -3,6 +3,7 @@ spring:
     name: signalling-server
 
 
+
 rocketmq:
   name-server: 117.50.68.180:9876
 
@@ -13,3 +14,9 @@ signalling:
   #  name-server: 117.50.68.180:9876
   rocketmq:
     task-topic: task-topic
+
+logging:
+  level:
+    com:
+      netty:
+        example: debug

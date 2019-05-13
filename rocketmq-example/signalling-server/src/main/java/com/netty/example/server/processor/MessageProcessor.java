@@ -26,8 +26,4 @@ public interface MessageProcessor {
         return (T)MESSAGE_OBJECT_FORMATTER.parse(wrapperMessage);
     }
 
-    default Object print(SignallingMessage.WrapperMessage wrapperMessage) {
-
-        return MESSAGE_OBJECT_FORMATTER.print(wrapperMessage);
-    }
 }

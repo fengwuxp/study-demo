@@ -90,6 +90,9 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
 
     @Override
     public boolean existConnection(String sessionIdentifier) {
+        if (sessionIdentifier == null) {
+            return false;
+        }
         return this.channelHandlerContextMap.containsKey(sessionIdentifier);
     }
 
@@ -100,5 +103,10 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
         }
         Attribute attr = channelHandlerContext.channel().attr(SESSION_IDENTIFIER_KEY);
         return (String) attr.get();
+    }
+
+    @Override
+    public int getConnectionTotal() {
+        return this.channelHandlerContextMap.size();
     }
 }

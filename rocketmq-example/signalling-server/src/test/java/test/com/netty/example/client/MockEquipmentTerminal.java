@@ -16,6 +16,9 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 import test.com.netty.example.client.handle.MockTerminalHandler;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * 模拟设备终端
  */
@@ -38,6 +41,8 @@ public class MockEquipmentTerminal implements Runnable {
 
     private MockTerminalHandler mockTerminalHandler;
 
+    private HeartbeatTimer heartbeatTimer;
+
     public MockEquipmentTerminal(String host, int port, String deviceCode) {
         this.deviceCode = deviceCode;
         this.host = host;
@@ -45,6 +50,7 @@ public class MockEquipmentTerminal implements Runnable {
         this.workerGroup = new NioEventLoopGroup();
         this.bootstrap = new Bootstrap();
         this.mockTerminalHandler = new MockTerminalHandler(deviceCode);
+        this.heartbeatTimer = new HeartbeatTimer();
     }
 
     @Override
@@ -83,7 +89,12 @@ public class MockEquipmentTerminal implements Runnable {
 
         log.debug("equipment connection successful ,code {}", this.deviceCode);
 
-        this.sendMessage("ping");
+        this.sendMessageConnectionMessage();
+
+        //心跳应该在设备连接成功后进行处理，这里只是一个示例
+        Timer timer = new Timer();
+        timer.schedule(this.heartbeatTimer, 60 * 1000, 180 * 1000);
+
         //释放连接
         try {
             channelFuture.channel().closeFuture().sync();
@@ -95,7 +106,16 @@ public class MockEquipmentTerminal implements Runnable {
 
     }
 
-    public void sendMessage(String message) {
-        this.mockTerminalHandler.sendMessage(message);
+    public void sendMessageConnectionMessage() {
+        this.mockTerminalHandler.sendMessageConnectionMessage();
+    }
+
+
+    public class HeartbeatTimer extends TimerTask {
+
+        @Override
+        public void run() {
+            mockTerminalHandler.sendPingMessage();
+        }
     }
 }

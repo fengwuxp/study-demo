@@ -32,7 +32,7 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
 
     static {
         MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.CONNECTION_REQUEST, new ConnectionMessageProcessor());
-        MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.PONG, new HeartbeatMessageProcessor());
+        MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.PING, new HeartbeatMessageProcessor());
     }
 
     /**
@@ -78,6 +78,7 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
 
         if (!DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.existConnection(ctx)) {
             //连接不存在
+            log.info("连接不存在，{}", ctx.channel().id());
             ctx.close();
             return;
         }

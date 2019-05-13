@@ -25,6 +25,9 @@ enum PayloadType {
 
     //pong
     PONG = 4;
+
+    //任务消息
+    TASK = 5;
 }
 
 //消息头

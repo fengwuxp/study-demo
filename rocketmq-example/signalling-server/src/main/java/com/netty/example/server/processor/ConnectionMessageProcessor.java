@@ -1,6 +1,7 @@
 package com.netty.example.server.processor;
 
 
+import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import com.netty.example.server.helper.MessageBuildHelper;
 import com.netty.example.server.proto.SignallingMessage;
@@ -34,9 +35,8 @@ public class ConnectionMessageProcessor implements MessageProcessor {
 
         if (connectionStatus == SignallingMessage.ConnectionStatus.SUCCESS) {
             //连接成功
-            log.info("设备{},连接成功", sessionIdentifier);
+            log.info("设备{},连接成功，当前已连接的设备数：{}", sessionIdentifier, CONNECTION_SESSION_MANAGER.getConnectionTotal());
             this.sendConnectionSuccessMessage(channelHandlerContext);
-
         } else if (connectionStatus == SignallingMessage.ConnectionStatus.REPEATED) {
             //重复连接,关闭掉这个链接
             log.warn("设备{},重复连接", sessionIdentifier);
@@ -52,38 +52,41 @@ public class ConnectionMessageProcessor implements MessageProcessor {
 
     private void sendConnectionSuccessMessage(ChannelHandlerContext channelHandlerContext) {
 
-        SignallingMessage.ConnectionResponseMessage responseMessage = SignallingMessage.ConnectionResponseMessage
+        SignallingMessage.ConnectionResponseMessage message = SignallingMessage.ConnectionResponseMessage
                 .newBuilder()
                 .setStatus(SignallingMessage.ConnectionStatus.SUCCESS)
                 .build();
-        channelHandlerContext
-                .channel()
-                .write(MessageBuildHelper.getConnectionResponseMessage(responseMessage));
+        this.sendMessage(MessageBuildHelper.getConnectionResponseMessage(message), channelHandlerContext);
     }
 
 
     private void sendConnectionRepeatedMessage(String errorMessage, ChannelHandlerContext channelHandlerContext) {
 
-        SignallingMessage.ConnectionResponseMessage responseMessage = SignallingMessage.ConnectionResponseMessage
+
+        SignallingMessage.ConnectionResponseMessage message = SignallingMessage.ConnectionResponseMessage
                 .newBuilder()
                 .setStatus(SignallingMessage.ConnectionStatus.REPEATED)
                 .setErrorMessage(errorMessage)
                 .build();
-        channelHandlerContext
-                .channel()
-                .write(MessageBuildHelper.getConnectionResponseMessage(responseMessage));
+        this.sendMessage(MessageBuildHelper.getConnectionResponseMessage(message), channelHandlerContext);
     }
 
     private void sendConnectionRepeatedError(String errorMessage, ChannelHandlerContext channelHandlerContext) {
 
-        SignallingMessage.ConnectionResponseMessage responseMessage = SignallingMessage.ConnectionResponseMessage
+        SignallingMessage.ConnectionResponseMessage message = SignallingMessage.ConnectionResponseMessage
                 .newBuilder()
                 .setStatus(SignallingMessage.ConnectionStatus.ERROR)
                 .setErrorMessage(errorMessage)
                 .build();
+        this.sendMessage(MessageBuildHelper.getConnectionResponseMessage(message), channelHandlerContext);
+
+    }
+
+    private void sendMessage(MessageLite messageLite, ChannelHandlerContext channelHandlerContext) {
         channelHandlerContext
                 .channel()
-                .write(MessageBuildHelper.getConnectionResponseMessage(responseMessage));
+                .write(messageLite);
+        channelHandlerContext.flush();
     }
 
 

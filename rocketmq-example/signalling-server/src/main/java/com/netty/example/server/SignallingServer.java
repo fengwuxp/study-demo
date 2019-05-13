@@ -83,7 +83,7 @@ public class SignallingServer {
             channel.pipeline().addLast(new ProtobufDecoder(SignallingMessage.WrapperMessage.getDefaultInstance()));
             channel.pipeline().addLast(new ProtobufEncoder());
 
-            channel.pipeline().addLast(new IdleStateHandler(5, 5, 5));
+            channel.pipeline().addLast(new IdleStateHandler(120, 120, 180));
             channel.pipeline().addLast(new SignallingServerHandler());
         }
 

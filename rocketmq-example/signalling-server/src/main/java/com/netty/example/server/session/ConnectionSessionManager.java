@@ -62,4 +62,12 @@ public interface ConnectionSessionManager {
     String getSessionIdentifier(ChannelHandlerContext channelHandlerContext);
 
 
+    /**
+     * 获取连接的总数
+     *
+     * @return
+     */
+    int getConnectionTotal();
+
+
 }
