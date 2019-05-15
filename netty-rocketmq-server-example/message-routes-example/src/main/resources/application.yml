@@ -1,0 +1,14 @@
+rocketmq:
+  name-server: 117.50.68.180:9876
+  producer:
+    group: example
+    send-message-timeout: 3000
+
+
+example:
+  #  name-server: 117.50.68.180:9876
+  rocketmq:
+    topic: string-topic
+    order-topic: order-paid-topic
+    msg-ext-topic: message-ext-topic
+    trans-topic: spring-transaction-topic

@@ -27,7 +27,7 @@ public class MarsVarint32FrameDecoder extends ByteToMessageDecoder {
 
         if (length > MAX_MESSAGE_LENGTH) {
             ctx.close();
-            throw new RuntimeException("message is lag");
+            throw new RuntimeException("message is too big");
         }
 
         if (preIndex == in.readerIndex()) {

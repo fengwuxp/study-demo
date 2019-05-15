@@ -23,6 +23,7 @@
         <module>signalling-server</module>
         <module>mars-server-exmaple</module>
         <module>admin-actuator-example</module>
+        <module>message-routes-example</module>
     </modules>
 
     <properties>
