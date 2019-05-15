@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * 默认的消息对象 formatter
  */
 @Slf4j
-public class DefaultMessageObjectFormatter implements MessageObjectFormatter {
+public class DefaultMessageObjectFormatter implements MessageObjectFormatter<SignallingMessage.WrapperMessage> {
 
 
     public static final MessageObjectFormatter MESSAGE_OBJECT_FORMATTER = new DefaultMessageObjectFormatter();
@@ -63,5 +63,6 @@ public class DefaultMessageObjectFormatter implements MessageObjectFormatter {
 
         return builder.build();
     }
+
 
 }

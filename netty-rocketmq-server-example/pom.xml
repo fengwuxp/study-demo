@@ -21,6 +21,7 @@
         <module>produce</module>
         <module>consume</module>
         <module>signalling-server</module>
+        <module>mars-server-exmaple</module>
     </modules>
 
     <properties>

@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * 连接消息处理
  */
 @Slf4j
-public class MockEquipmentConnectionMessageProcessor implements MessageProcessor {
+public class MockEquipmentConnectionMessageProcessor implements MessageProcessor<SignallingMessage.WrapperMessage> {
 
 
     @Override

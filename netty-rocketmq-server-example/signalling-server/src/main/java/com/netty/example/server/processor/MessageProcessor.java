@@ -2,13 +2,12 @@ package com.netty.example.server.processor;
 
 import com.netty.example.server.formatter.DefaultMessageObjectFormatter;
 import com.netty.example.server.formatter.MessageObjectFormatter;
-import com.netty.example.server.proto.SignallingMessage;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
  * 消息处理器
  */
-public interface MessageProcessor {
+public interface MessageProcessor<M> {
 
     MessageObjectFormatter MESSAGE_OBJECT_FORMATTER = new DefaultMessageObjectFormatter();
 
@@ -18,12 +17,12 @@ public interface MessageProcessor {
      * @param wrapperMessage
      * @param channelHandlerContext
      */
-    void process(SignallingMessage.WrapperMessage wrapperMessage, ChannelHandlerContext channelHandlerContext);
+    void process(M wrapperMessage, ChannelHandlerContext channelHandlerContext);
 
 
-    default <T> T parseMessage(SignallingMessage.WrapperMessage wrapperMessage) {
+    default <T> T parseMessage(M wrapperMessage) {
 
-        return (T)MESSAGE_OBJECT_FORMATTER.parse(wrapperMessage);
+        return (T) MESSAGE_OBJECT_FORMATTER.parse(wrapperMessage);
     }
 
 }

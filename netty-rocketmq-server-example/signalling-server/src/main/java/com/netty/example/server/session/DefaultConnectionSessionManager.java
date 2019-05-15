@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +49,10 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
 
     @Override
     public void remove(String sessionIdentifier) {
-        this.channelHandlerContextMap.remove(sessionIdentifier);
+        if (StringUtils.hasText(sessionIdentifier)){
+            this.channelHandlerContextMap.remove(sessionIdentifier);
+        }
+
     }
 
     @Override
@@ -65,7 +69,6 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
         if (channelContextHolder == null) {
             return null;
         }
-
 
         boolean needRemove = channelContextHolder.isRemoved() && !channelContextHolder.channel().isActive();
 
@@ -95,7 +98,12 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
 
     @Override
     public String getSessionIdentifier(ChannelHandlerContext channelHandlerContext) {
-        if (channelHandlerContext.channel().hasAttr(SESSION_IDENTIFIER_KEY)) {
+
+        if (channelHandlerContext == null) {
+            return null;
+        }
+
+        if (!channelHandlerContext.channel().hasAttr(SESSION_IDENTIFIER_KEY)) {
             return null;
         }
         Attribute attr = channelHandlerContext.channel().attr(SESSION_IDENTIFIER_KEY);

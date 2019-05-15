@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-public class MockEquipmentPongMessageProcessor implements MessageProcessor {
+public class MockEquipmentPongMessageProcessor implements MessageProcessor<SignallingMessage.WrapperMessage> {
 
     @Override
     public void process(SignallingMessage.WrapperMessage wrapperMessage, ChannelHandlerContext channelHandlerContext) {

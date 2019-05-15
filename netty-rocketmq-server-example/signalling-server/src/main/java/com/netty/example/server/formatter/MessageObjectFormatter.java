@@ -4,17 +4,16 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageOrBuilder;
 import com.google.protobuf.util.JsonFormat;
-import com.netty.example.server.proto.SignallingMessage;
 
 import java.io.UnsupportedEncodingException;
 
 /**
  * 消息对象解析
  */
-public interface MessageObjectFormatter {
+public interface MessageObjectFormatter<T> {
 
 
-    Object parse(SignallingMessage.WrapperMessage wrapperMessage);
+    Object parse(T wrapperMessage);
 
 
     default ByteString print(MessageOrBuilder builder) {

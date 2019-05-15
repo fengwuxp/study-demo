@@ -1,7 +1,6 @@
 package com.netty.example.server.handle;
 
 
-import com.netty.example.server.heartbeat.DefaultIdleStateEventProcessor;
 import com.netty.example.server.heartbeat.HeartbeatMessageProcessor;
 import com.netty.example.server.heartbeat.IdleStateEventProcessor;
 import com.netty.example.server.processor.ConnectionMessageProcessor;
@@ -13,23 +12,21 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
 
 
-    private final static Map<SignallingMessage.PayloadType, MessageProcessor> MESSAGE_PROCESSOR_MAP = new HashMap<>();
+    @Autowired
+    private IdleStateEventProcessor idleStateEventProcessor;
 
-    private IdleStateEventProcessor idleStateEventProcessor = new DefaultIdleStateEventProcessor();
+    @Autowired
+    private Map<SignallingMessage.PayloadType, MessageProcessor> messageProcessorMap;
 
-    static {
-        MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.CONNECTION_REQUEST, new ConnectionMessageProcessor());
-        MESSAGE_PROCESSOR_MAP.put(SignallingMessage.PayloadType.PING, new HeartbeatMessageProcessor());
-    }
 
     /**
      * 当通道被激活的时候
@@ -39,7 +36,9 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.debug("通道被激活，channelId={}", ctx.channel().id());
+        if (log.isDebugEnabled()) {
+            log.debug("通道被激活，channelId={}", ctx.channel().id());
+        }
     }
 
     /**
@@ -57,7 +56,7 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
         }
 
         SignallingMessage.PayloadType payloadType = requestMessage.getHeader().getPayloadType();
-        MessageProcessor messageProcessor = MESSAGE_PROCESSOR_MAP.get(payloadType);
+        MessageProcessor messageProcessor = messageProcessorMap.get(payloadType);
         if (messageProcessor != null) {
             messageProcessor.process(requestMessage, ctx);
         } else {
@@ -74,22 +73,25 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
 
         if (!DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.existConnection(ctx)) {
             //连接不存在
-            log.info("连接不存在，{}", ctx.channel().id());
+            log.info("连接不存在，设备={}", DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getSessionIdentifier(ctx));
             ctx.close();
             return;
         }
 
-        if (evt instanceof IdleStateEvent) {
-            // IdleStateHandler 所产生的 IdleStateEvent 的处理逻辑.
-            IdleStateEvent e = (IdleStateEvent) evt;
 
+        if (evt instanceof IdleStateEvent) {
+            IdleStateEvent e = (IdleStateEvent) evt;
             IdleState state = e.state();
-//            log.error("设备 {}连接状态，state {}", clientChannelContextHolder.getDeviceCode(), state.name());
+
+            if (log.isDebugEnabled()) {
+                log.debug("设备{}，连接空闲，state={}",
+                        DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getSessionIdentifier(ctx),
+                        state);
+            }
 
             switch (state) {
                 case READER_IDLE:
                     this.idleStateEventProcessor.readIdleProcess(ctx);
-
                     break;
                 case WRITER_IDLE:
                     this.idleStateEventProcessor.writeIdleProcess(ctx);
@@ -103,15 +105,21 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        log.debug("数据读取完成!");
+        if (log.isDebugEnabled()) {
+            log.debug("数据读取完成!");
+        }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
-        log.error("发生异常", cause);
+        if (log.isDebugEnabled()) {
+            log.debug("通道连接发生异常，设备={}", DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getSessionIdentifier(ctx), cause);
+        }
+        DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.remove(ctx);
         ctx.close();
     }
 

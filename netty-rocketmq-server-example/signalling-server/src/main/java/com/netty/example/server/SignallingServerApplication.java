@@ -1,17 +1,23 @@
 package com.netty.example.server;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.netty.example.server.monitor.HealthMonitor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@Slf4j
+@SpringBootApplication(scanBasePackages = {"com.netty.example.server"})
 public class SignallingServerApplication implements CommandLineRunner {
 
 
+    @Autowired
+    private HealthMonitor healthMonitor;
 
-    @Value("${signalling.server.port}")
-    private int port;
+    @Autowired
+    private SignallingServer signallingServer;
+
 
     public static void main(String[] args) {
 
@@ -21,6 +27,7 @@ public class SignallingServerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        new SignallingServer(this.port).start();
+        healthMonitor.monitor();
+        this.signallingServer.start();
     }
 }

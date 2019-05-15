@@ -1,6 +1,5 @@
 package test.com.netty.example.client.handle;
 
-import com.google.protobuf.MessageLite;
 import com.netty.example.server.heartbeat.DefaultIdleStateEventProcessor;
 import com.netty.example.server.heartbeat.IdleStateEventProcessor;
 import com.netty.example.server.helper.MessageBuildHelper;
@@ -67,15 +66,16 @@ public class MockTerminalHandler extends ChannelInboundHandlerAdapter {
             if (log.isDebugEnabled()) {
                 log.debug("未处理的数据类型，{}", payloadType);
             }
-
         }
-
-
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
+        log.debug("设备{}，连接被关闭，尝试重新连接", this.deviceCode);
+
+        //TODO 区分首次连接和重连
+        //连接
+        this.sendMessageConnectionMessage();
     }
 
 

@@ -8,5 +8,11 @@ package com.netty.example.server.push;
  */
 public interface MessagePusher<T> {
 
+    /**
+     * 推送
+     *
+     * @param message
+     * @return
+     */
     boolean push(T message);
 }

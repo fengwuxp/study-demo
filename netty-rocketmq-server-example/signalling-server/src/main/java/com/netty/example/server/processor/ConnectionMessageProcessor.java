@@ -1,12 +1,9 @@
 package com.netty.example.server.processor;
 
 
-import com.google.protobuf.Message;
-import com.google.protobuf.MessageLite;
 import com.netty.example.server.helper.MessageBuildHelper;
 import com.netty.example.server.helper.SendMessageHelper;
 import com.netty.example.server.proto.SignallingMessage;
-import com.netty.example.server.session.ConnectionSessionManager;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +13,7 @@ import static com.netty.example.server.session.DefaultConnectionSessionManager.C
  * 连接消息处理
  */
 @Slf4j
-public class ConnectionMessageProcessor implements MessageProcessor {
+public class ConnectionMessageProcessor implements MessageProcessor<SignallingMessage.WrapperMessage> {
 
 
     @Override

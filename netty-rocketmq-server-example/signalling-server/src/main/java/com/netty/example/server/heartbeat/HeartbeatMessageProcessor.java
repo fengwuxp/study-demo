@@ -1,6 +1,5 @@
 package com.netty.example.server.heartbeat;
 
-import com.google.protobuf.MessageLite;
 import com.netty.example.server.helper.MessageBuildHelper;
 import com.netty.example.server.helper.SendMessageHelper;
 import com.netty.example.server.processor.MessageProcessor;
@@ -12,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * 心跳消息处理
  */
 @Slf4j
-public class HeartbeatMessageProcessor implements MessageProcessor {
+public class HeartbeatMessageProcessor implements MessageProcessor<SignallingMessage.WrapperMessage> {
 
 
     private static final Integer PINT = 1;
@@ -23,7 +22,9 @@ public class HeartbeatMessageProcessor implements MessageProcessor {
     public void process(SignallingMessage.WrapperMessage wrapperMessage, ChannelHandlerContext channelHandlerContext) {
         SignallingMessage.PingMessage pingMessage = this.parseMessage(wrapperMessage);
 
-        log.debug("收到ping消息，{}", pingMessage.getPing());
+        if (log.isDebugEnabled()) {
+            log.debug("收到ping消息，{}", pingMessage.getPing());
+        }
         if (PINT.equals(pingMessage.getPing())) {
             SendMessageHelper.sendMessage(MessageBuildHelper.getPongMessage(SignallingMessage.PongMessage
                     .newBuilder()

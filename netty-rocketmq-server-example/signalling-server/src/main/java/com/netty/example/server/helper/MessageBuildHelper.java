@@ -1,17 +1,12 @@
 package com.netty.example.server.helper;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.MessageLite;
 import com.google.protobuf.MessageOrBuilder;
-import com.google.protobuf.util.JsonFormat;
 import com.netty.example.server.formatter.DefaultMessageObjectFormatter;
 import com.netty.example.server.proto.SignallingMessage;
 import com.netty.example.server.proto.TaskMessageOuterClass;
 import org.springframework.util.AlternativeJdkIdGenerator;
 import org.springframework.util.IdGenerator;
-
-import java.io.UnsupportedEncodingException;
 
 public final class MessageBuildHelper {
 

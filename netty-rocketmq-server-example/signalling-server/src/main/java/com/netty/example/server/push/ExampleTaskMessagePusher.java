@@ -44,8 +44,6 @@ public class ExampleTaskMessagePusher implements MessagePusher<String> {
 
         ChannelHandlerContext connection = DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getConnection(identifier);
 
-        //TODO 判断连接的有效性
-
         //推送任务消息
         SendMessageHelper.sendMessage(MessageBuildHelper.getPushTaskMessage(taskMessage), connection);
 

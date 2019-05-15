@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MockEquipmentTaskMessageProcessor implements MessageProcessor {
+public class MockEquipmentTaskMessageProcessor implements MessageProcessor<SignallingMessage.WrapperMessage> {
 
 
     @Override
