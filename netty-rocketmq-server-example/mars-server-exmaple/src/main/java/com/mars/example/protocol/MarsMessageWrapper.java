@@ -24,9 +24,9 @@ public final class MarsMessageWrapper {
 
 
     /**
-     * 头部长度
+     * 消息长度
      */
-    private int headLength;
+    private int length;
 
     /**
      * 客户端版本

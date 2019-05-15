@@ -1,6 +1,15 @@
+server:
+  port: 9092
+
 spring:
   application:
     name: signalling-server
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
+        instance:
+          name: signalling-servery
 
 
 
@@ -21,3 +30,10 @@ logging:
     com:
       netty:
         example: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+

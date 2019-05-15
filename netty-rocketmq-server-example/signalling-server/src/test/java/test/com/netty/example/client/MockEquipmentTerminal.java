@@ -51,16 +51,7 @@ public class MockEquipmentTerminal implements Runnable {
         this.bootstrap = new Bootstrap();
         this.mockTerminalHandler = new MockTerminalHandler(deviceCode);
         this.heartbeatTimer = new HeartbeatTimer();
-    }
 
-    @Override
-    public void run() {
-        this.connection();
-    }
-
-    protected void connection() {
-
-        log.debug("connection server {}:{}", this.host, this.port);
 
         //是一个启动NIO服务的辅助启动类
         this.bootstrap.group(this.workerGroup)  //绑定1个工作线程组
@@ -84,13 +75,21 @@ public class MockEquipmentTerminal implements Runnable {
                     }
                 });
 
+    }
 
+    @Override
+    public void run() {
+        this.connection();
+    }
+
+    protected void connection() {
+
+        log.debug("connection server {}:{}", this.host, this.port);
         ChannelFuture channelFuture = bootstrap.connect(this.host, this.port).syncUninterruptibly();
 
         log.debug("equipment connection successful ,code {}", this.deviceCode);
 
         this.sendMessageConnectionMessage();
-
         //心跳应该在设备连接成功后进行处理，这里只是一个示例
         Timer timer = new Timer();
         timer.schedule(this.heartbeatTimer, 60 * 1000, 180 * 1000);
@@ -103,7 +102,6 @@ public class MockEquipmentTerminal implements Runnable {
         } finally {
             this.workerGroup.shutdownGracefully();
         }
-
     }
 
     public void sendMessageConnectionMessage() {

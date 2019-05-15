@@ -7,17 +7,18 @@ import com.netty.example.server.processor.ConnectionMessageProcessor;
 import com.netty.example.server.processor.MessageProcessor;
 import com.netty.example.server.proto.SignallingMessage;
 import com.netty.example.server.session.DefaultConnectionSessionManager;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Slf4j
+@ChannelHandler.Sharable
 public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
 
 
@@ -25,7 +26,7 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
     private IdleStateEventProcessor idleStateEventProcessor;
 
     @Autowired
-    private Map<SignallingMessage.PayloadType, MessageProcessor> messageProcessorMap;
+    private Map<SignallingMessage.PayloadType, MessageProcessor<SignallingMessage.WrapperMessage>> messageProcessorMap;
 
 
     /**
@@ -56,7 +57,7 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
         }
 
         SignallingMessage.PayloadType payloadType = requestMessage.getHeader().getPayloadType();
-        MessageProcessor messageProcessor = messageProcessorMap.get(payloadType);
+        MessageProcessor<SignallingMessage.WrapperMessage> messageProcessor = messageProcessorMap.get(payloadType);
         if (messageProcessor != null) {
             messageProcessor.process(requestMessage, ctx);
         } else {
@@ -113,14 +114,30 @@ public class SignallingServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
         if (log.isDebugEnabled()) {
             log.debug("通道连接发生异常，设备={}", DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getSessionIdentifier(ctx), cause);
         }
-        DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.remove(ctx);
-        ctx.close();
+        boolean needRemove = ctx.isRemoved() && !ctx.channel().isActive();
+        if (needRemove) {
+            DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.remove(ctx);
+            ctx.close();
+        }
+
     }
 
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelUnregistered(ctx);
+
+        if (log.isDebugEnabled()) {
+            log.debug("通道连接断开，设备={}", DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getSessionIdentifier(ctx));
+        }
+
+        DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.remove(ctx);
+    }
 }

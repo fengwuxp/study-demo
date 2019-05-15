@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 
-
 @Component
 @Slf4j
 public class DefaultIdleStateEventProcessor implements IdleStateEventProcessor {
@@ -17,7 +16,7 @@ public class DefaultIdleStateEventProcessor implements IdleStateEventProcessor {
 
         String sessionIdentifier = DefaultConnectionSessionManager.CONNECTION_SESSION_MANAGER.getSessionIdentifier(channelHandlerContext);
         if (log.isDebugEnabled()) {
-            log.debug("会话{}，read idle", sessionIdentifier);
+            log.debug("会话{}， idle", sessionIdentifier);
         }
 
         if (StringUtils.hasText(sessionIdentifier)) {
@@ -25,6 +24,9 @@ public class DefaultIdleStateEventProcessor implements IdleStateEventProcessor {
         }
 
         //TODO
+        if (log.isDebugEnabled()) {
+            log.debug("关闭设备的连接，{}", sessionIdentifier);
+        }
 
         channelHandlerContext.close();
 

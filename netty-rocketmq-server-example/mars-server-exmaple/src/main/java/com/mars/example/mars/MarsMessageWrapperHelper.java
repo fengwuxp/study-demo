@@ -74,7 +74,7 @@ public final class MarsMessageWrapperHelper {
 
         return MarsMessageWrapper.builder()
                 .command(command)
-                .headLength(length + FIXED_HEADER_SKIP)
+                .length(length + FIXED_HEADER_SKIP)
                 .clientVersion(CLIENT_VERSION)
                 .body(body)
                 .build();
@@ -125,7 +125,7 @@ public final class MarsMessageWrapperHelper {
             }
 
             return MarsMessageWrapper.builder()
-                    .headLength(headLength)
+                    .length(headLength)
                     .clientVersion(clientVersion)
                     .command(command)
                     .seq(seq)

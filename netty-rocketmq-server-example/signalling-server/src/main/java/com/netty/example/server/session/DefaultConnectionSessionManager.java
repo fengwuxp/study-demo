@@ -65,20 +65,20 @@ public class DefaultConnectionSessionManager implements ConnectionSessionManager
 
     @Override
     public ChannelHandlerContext getConnection(String sessionIdentifier) {
-        ChannelHandlerContext channelContextHolder = this.channelHandlerContextMap.get(sessionIdentifier);
-        if (channelContextHolder == null) {
+        ChannelHandlerContext channelHandlerContext = this.channelHandlerContextMap.get(sessionIdentifier);
+        if (channelHandlerContext == null) {
             return null;
         }
 
-        boolean needRemove = channelContextHolder.isRemoved() && !channelContextHolder.channel().isActive();
+        boolean needRemove = channelHandlerContext.isRemoved() && !channelHandlerContext.channel().isActive();
 
         if (needRemove) {
             //已经被移除
             this.channelHandlerContextMap.remove(sessionIdentifier);
-            channelContextHolder.close();
+            channelHandlerContext.close();
             return null;
         }
-        return channelContextHolder;
+        return channelHandlerContext;
     }
 
     @Override

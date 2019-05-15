@@ -2,16 +2,11 @@ package com.mars.example.server;
 
 
 import com.mars.example.heartbeat.MarsHeartbeatMessageProcessor;
-import com.mars.example.mars.MarsMessageWrapperHelper;
 import com.mars.example.protocol.MarsMessageWrapper;
 import com.netty.example.server.heartbeat.DefaultIdleStateEventProcessor;
-import com.netty.example.server.heartbeat.HeartbeatMessageProcessor;
 import com.netty.example.server.heartbeat.IdleStateEventProcessor;
-import com.netty.example.server.processor.ConnectionMessageProcessor;
 import com.netty.example.server.processor.MessageProcessor;
-import com.netty.example.server.proto.SignallingMessage;
 import com.netty.example.server.session.DefaultConnectionSessionManager;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -21,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mars.example.mars.MarsCommandConstant.MARS_CMD_PING_VALUE;
+import static com.mars.example.mars.MarsCommandConstant.MARS_CMD_HEARTBEAT_VALUE;
 
 @Slf4j
 public class MarsSignallingServerHandler extends ChannelInboundHandlerAdapter {
@@ -32,7 +27,7 @@ public class MarsSignallingServerHandler extends ChannelInboundHandlerAdapter {
     private IdleStateEventProcessor idleStateEventProcessor = new DefaultIdleStateEventProcessor();
 
     static {
-        MESSAGE_PROCESSOR_MAP.put(MARS_CMD_PING_VALUE, new MarsHeartbeatMessageProcessor());
+        MESSAGE_PROCESSOR_MAP.put(MARS_CMD_HEARTBEAT_VALUE, new MarsHeartbeatMessageProcessor());
     }
 
     /**

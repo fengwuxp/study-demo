@@ -13,7 +13,7 @@ public final class MarsCommandConstant {
     /**
      * 心跳包 cmdid = 6 可在 longlink_packer.cc 自定义
      */
-    public static final int MARS_CMD_PING_VALUE = 6;
+    public static final int MARS_CMD_HEARTBEAT_VALUE = 6;
 
 //    public static final int MARS_CMD_PONG_VALUE = 6;
 

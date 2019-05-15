@@ -1,5 +1,6 @@
 package com.netty.example.server.handle;
 
+import com.netty.example.server.config.SignallingConfig;
 import com.netty.example.server.proto.SignallingMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -9,6 +10,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component()
 public class ChannelInitializerImpl<T extends Channel> extends ChannelInitializer<T> {
+
+
+    @Autowired
+    private SignallingServerHandler signallingServerHandler;
+//    private SignallingConfig signallingConfig;
 
 
     @Override
@@ -32,13 +39,8 @@ public class ChannelInitializerImpl<T extends Channel> extends ChannelInitialize
         channel.pipeline().addLast(new ProtobufEncoder());
 
         channel.pipeline().addLast(new IdleStateHandler(120, 120, 180));
-        channel.pipeline().addLast(this.getSignallingServerHandler());
-    }
-
-
-    @Bean
-    public SignallingServerHandler getSignallingServerHandler() {
-        return new SignallingServerHandler();
+//        SignallingServerHandler signallingServerHandler = signallingConfig.signallingServerHandler();
+        channel.pipeline().addLast(signallingServerHandler);
     }
 
 

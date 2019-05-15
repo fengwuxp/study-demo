@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.4.RELEASE</version>
+        <version>2.0.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,11 +22,13 @@
         <module>consume</module>
         <module>signalling-server</module>
         <module>mars-server-exmaple</module>
+        <module>admin-actuator-example</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <rocketmq-spring-boot-starter-version>2.0.3-SNAPSHOT</rocketmq-spring-boot-starter-version>
+        <spring.boot.admin.server.version>2.0.1</spring.boot.admin.server.version>
     </properties>
 
     <profiles>

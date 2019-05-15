@@ -3,7 +3,6 @@ package com.mars.example.mars;
 
 import com.mars.example.command.MessageCommandFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class MarsMessageCommandFactory implements MessageCommandFactory<MarsMess
     /**
      * 心跳包包命令
      */
-    private static final MarsMessageCommand MARS_CMD_PING_OR_PONG = new MarsMessageCommand(MARS_CMD_PING_VALUE);
+    private static final MarsMessageCommand MARS_CMD_PING_OR_PONG = new MarsMessageCommand(MARS_CMD_HEARTBEAT_VALUE);
 
     /**
      * 信令 signalling
@@ -47,7 +46,7 @@ public class MarsMessageCommandFactory implements MessageCommandFactory<MarsMess
         }
 
         switch (commandId) {
-            case MARS_CMD_PING_VALUE:
+            case MARS_CMD_HEARTBEAT_VALUE:
                 return MARS_CMD_PING_OR_PONG;
             case MARS_CMD_SIGNALLING_VALUE:
                 return MARS_CMD_SIGNALLING;

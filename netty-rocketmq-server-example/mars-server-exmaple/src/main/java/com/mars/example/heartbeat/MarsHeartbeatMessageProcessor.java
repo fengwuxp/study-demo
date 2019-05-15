@@ -3,14 +3,11 @@ package com.mars.example.heartbeat;
 import com.mars.example.helper.MarsSendMessageHelper;
 import com.mars.example.mars.MarsMessageWrapperHelper;
 import com.mars.example.protocol.MarsMessageWrapper;
-import com.netty.example.server.helper.MessageBuildHelper;
-import com.netty.example.server.helper.SendMessageHelper;
 import com.netty.example.server.processor.MessageProcessor;
-import com.netty.example.server.proto.SignallingMessage;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.mars.example.mars.MarsCommandConstant.MARS_CMD_PING_VALUE;
+import static com.mars.example.mars.MarsCommandConstant.MARS_CMD_HEARTBEAT_VALUE;
 
 /**
  * 基于心跳消息处理
@@ -27,7 +24,7 @@ public class MarsHeartbeatMessageProcessor implements MessageProcessor<MarsMessa
         }
 
         //回复pong消息
-        MarsSendMessageHelper.sendMessage(MarsMessageWrapperHelper.buildMessage(MARS_CMD_PING_VALUE, null),
+        MarsSendMessageHelper.sendMessage(MarsMessageWrapperHelper.buildMessage(MARS_CMD_HEARTBEAT_VALUE, null),
                 channelHandlerContext);
 
     }

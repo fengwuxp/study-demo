@@ -27,7 +27,7 @@ public class SignallingServerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        healthMonitor.monitor();
-        this.signallingServer.start();
+//        healthMonitor.monitor();
+//        this.signallingServer.start();
     }
 }
