@@ -20,35 +20,40 @@ public class DefaultMessageTransmitter implements MessageTransmitter<String> {
     private RocketMQTemplate rocketMQTemplate;
 
     @Override
-    public boolean transmit(String data) {
-
-        Message<String> message = new GenericMessage(data);
-
-        rocketMQTemplate.send(this.genDestination(), message);
-
+    public boolean transmit(String data, String target) {
         return false;
     }
 
-    @Override
-    public boolean transmit(Collection<String> data) {
+    //    @Override
+//    public boolean transmit(String data) {
+//
+//        Message<String> message = new GenericMessage(data);
+//
+//        rocketMQTemplate.send(this.genDestination(), message);
+//
+//        return false;
+//    }
 
-        List<Message<String>> messages = data.stream().map(GenericMessage::new).collect(Collectors.toList());
-
-
-        rocketMQTemplate.syncSend(this.genDestination(), messages, 30 * 1000);
-
-        return false;
-    }
-
-
-    /**
-     * 根据 长连接的路由表生成
-     *
-     * @return
-     */
-    protected String genDestination() {
-
-        //TODO topicName:tags
-        return "task-topic:hostname";
-    }
+//    @Override
+//    public boolean transmit(Collection<String> data) {
+//
+//        List<Message<String>> messages = data.stream().map(GenericMessage::new).collect(Collectors.toList());
+//
+//
+//        rocketMQTemplate.syncSend(this.genDestination(), messages, 30 * 1000);
+//
+//        return false;
+//    }
+//
+//
+//    /**
+//     * 根据 长连接的路由表生成
+//     *
+//     * @return
+//     */
+//    protected String genDestination() {
+//
+//        //TODO topicName:tags
+//        return "task-topic:hostname";
+//    }
 }

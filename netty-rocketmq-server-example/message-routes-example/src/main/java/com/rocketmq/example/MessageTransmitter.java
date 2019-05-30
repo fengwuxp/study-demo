@@ -8,7 +8,7 @@ import java.util.Collection;
  */
 public interface MessageTransmitter<T> {
 
-    boolean transmit(T data);
+    boolean transmit(T data,String target);
 
-    boolean transmit(Collection<T> data);
+//    boolean transmit(Collection<T> data);
 }
