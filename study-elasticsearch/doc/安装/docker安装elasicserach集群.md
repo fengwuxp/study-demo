@@ -1,6 +1,7 @@
 
 
 #### docker安装
+
 - 安装方式来源 [使用kubeadm安装Kubernetes 1.15](https://www.kubernetes.org.cn/5551.html)
 - 安装docker的yum源:
 ```
@@ -90,4 +91,10 @@ chmod +x /usr/local/bin/docker-compose
  1.如果出现内存不够的提示，加大内存设置（虚拟机）
  2.max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
  编辑 /etc/sysctl.conf，追加以下内容：vm.max_map_count=262144保存后，执行：sysctl -p，让后重新启动
+```
+- 启动成功后访问对应的端口
+```
+ kibana: http://127.0.0.1:5601
+ elasticsearch: http://127.0.0.1:9200
+ cerebro: http://127.0.0.1:9000
 ```
