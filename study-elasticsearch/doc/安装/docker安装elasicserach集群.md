@@ -48,11 +48,15 @@
 - [Docker — 从入门到实践](https://docker_practice.gitee.io/)
 - [linux安装方式](https://docker_practice.gitee.io/compose/install.html)
 ```
-curl -L https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+ curl -L https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+ chmod +x /usr/local/bin/docker-compose
 
-//如果curl命令出现类似错误 Peer reports incompatible or unsupported protocol version.
-则可以通过yum升级curl
+ //如果curl命令出现类似错误 Peer reports incompatible or unsupported protocol version.
+ 则可以通过yum升级curl
+ 命令如下：
+ 
+ yum update -y nss curl libcurl  # nss为名称解析和认证服务 curl为网络请求库
+
 ```
 
 ### 通过docker compose安装elasticserach
