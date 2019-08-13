@@ -1,4 +1,4 @@
-package test.com.wuxp.study.querydsl;
+package test.com.wuxp.study;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,12 +7,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WuxpStudyQueryDSLApplicationTest {
+public class SpringBootElasticsearchApplicationTests {
 
-
-    @Test
-    public void contextLoads() {
-    }
+	@Test
+	public void contextLoads() {
+	}
 
 }
-

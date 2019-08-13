@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import test.com.wuxp.study.TestServiceMain;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ import java.util.Date;
  * @since <pre>二月 16, 2019</pre>
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {WuxpStudyQueryDSLApplication.class})
+@SpringBootTest(classes = {TestServiceMain.class})
 public class MemberServiceTest {
 
 
