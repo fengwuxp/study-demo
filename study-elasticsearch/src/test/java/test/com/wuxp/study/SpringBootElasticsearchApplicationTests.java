@@ -1,16 +1,23 @@
 package test.com.wuxp.study;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import com.wuxp.study.config.RestConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+import java.io.File;
+
+@SpringBootApplication(
+        scanBasePackages = {"com.wuxp"})
+@Import(RestConfig.class)
+@Configuration
 public class SpringBootElasticsearchApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    public static void main(String[] args) {
+		System.out.println(SpringBootElasticsearchApplicationTests.class.getSimpleName() + " WORK DIR:" + new File("").getAbsolutePath());
+
+		SpringApplication.run(SpringBootElasticsearchApplicationTests.class, args);
+    }
 
 }

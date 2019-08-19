@@ -1,5 +1,5 @@
 spring:
   data:
     elasticsearch:
-      cluster-name: docker-cluster
-      cluster-nodes: localhost:9300
+      cluster-name: geektime
+      cluster-nodes: 192.168.128.128:9200
