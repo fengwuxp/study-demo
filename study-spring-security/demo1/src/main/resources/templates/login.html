@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>请登录</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/login}" method="post" action="/login">
+        <p>
+            <span>用户名:</span>
+            <input type="text" id="username" name="username">
+        </p>
+        <p>
+            <span>密码:</span>
+            <input type="password" id="password" name="password">
+        </p>
+
+        <!-- 不使用 th:action 属性 和 不关闭csrf 的情况下，需要放开下面的标签 -->
+        <!--<input th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}"/>-->
+
+        <!--                <input type="submit" value="登录" />-->
+        <a href="javascript:;" id="login">登陆</a>
+    </form>
+</div>
+</body>
+<script>
+
+    document.getElementById("login").addEventListener("click", function () {
+
+        fetch("/demo1/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: "username=123456&password=123456"
+        }).then(function (response) {
+            //登陆成功
+            // console.log("------>",response);
+            response.json().then(function (value) {
+                console.log("------>",value);
+            })
+            // location.href = "/demo1/users/my";
+        }).catch(function (e) {
+            console.log(e);
+        })
+    })
+
+</script>
+</html>
+
+

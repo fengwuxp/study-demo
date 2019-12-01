@@ -6,27 +6,30 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "module": "esnext",
-    "target": "es6",
-    "sourceMap": true,
-    "allowJs": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
+    "target": "esnext",
+    "sourceMap": false,
+    "baseUrl": "./src",
+    "importHelpers": true,
     "types": [
       "node",
-      "lodash"
+      "jest"
     ],
     "lib": [
       "dom",
-      "es5",
-      "es2015",
-      "es2015.promise"
+      "es7",
+      "es2018",
+      "es2018.promise"
     ]
   },
-  "compileOnSave": false,
   "include": [
-    "src/**/*"
+    "./src/**/*",
+    "./test/**/*",
+    "./types/**/*.d.ts",
+    "node_modules/**/*/types/**/*.d.ts"
   ],
   "exclude": [
+    "dist",
+    "node_modules",
     "**/*.spec.ts"
   ]
 }

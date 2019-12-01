@@ -1,0 +1,8 @@
+server:
+  port: 8912
+  servlet:
+    context-path: /demo1
+
+logging:
+  level:
+    root: debug
