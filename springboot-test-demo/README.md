@@ -30,3 +30,6 @@ public class MockitoServiceMockTest {
 ```
 - 简单演示了MockBen和SpyBean的用法，spring对mockito的支持
 - 通过使用h2数据库的内存模式加快测试的启动速度
+
+#### 
+- [testable-mock](https://github.com/alibaba/testable-mock)

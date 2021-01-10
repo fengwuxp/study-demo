@@ -2,18 +2,11 @@ package com.wuxp.study.mockito;
 
 
 import com.wuxp.study.entities.Member;
-import com.wuxp.study.repositories.MemberRepository;
-import com.wuxp.study.services.MemberService;
 import com.wuxp.study.services.MemberServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;

@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest(properties = {"spring.jpa.hibernate.auto-ddl=update"},
+@DataJpaTest(properties = {"spring.datasource.schema=classpath:jdbc-schema.sql"},
         excludeAutoConfiguration = {JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
 @ActiveProfiles("test")
 @ComponentScan(value = {"com.wuxp.study.services", "com.wuxp.study.repositories"})
