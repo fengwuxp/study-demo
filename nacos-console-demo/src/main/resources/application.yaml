@@ -1,0 +1,3 @@
+server:
+  tomcat:
+    basedir: /Users/wuxp/nacos-tomcat-temp
